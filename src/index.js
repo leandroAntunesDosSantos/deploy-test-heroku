@@ -1,25 +1,15 @@
-require('dotenv').config()
-const express = require('express')
+require("dotenv").config();
+const express = require("express");
+//const cors = require("cors");
 
-const knex = require('./conexao')
+const rotas = require("./rotas");
+const { PORT } = process.env;
 
-const app = express()
+const app = express();
 
-app.use(express.json())
+//app.use(cors());
+app.use(express.json());
 
+app.use(rotas);
 
-
-app.get('/', async (req, res) => {
-    try{
-        const categoria = await knex('categorias')
-
-        return res.json(categoria)
-    }catch(error){
-        console.log(error)
-        return res.status(400).json({erro: error.message})
-    }
-})
-
-app.listen(process.env.PORT , () => {
-    console.log(`Server is running on port ${process.env.PORT }`)
-})
+app.listen(PORT, () => console.log(`O servidor está rodando na porta ${PORT}`));
